@@ -72,6 +72,7 @@ dependencies {
     api(libs.flatlaf.core)
     implementation(libs.flatlaf.extras)
     api(libs.commons.text)
+    api("org.apache.commons:commons-csv:1.10.0")
     api(libs.jna.core)
     api(libs.jna.platform)
     api(libs.findbugs)

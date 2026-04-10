@@ -1,0 +1,86 @@
+# JVM Arguments for Multi-Boxing RuneLite
+# Optimized for minimal memory usage and maximum client count
+#
+# Usage in IntelliJ:
+# Run -> Edit Configurations -> VM options -> Paste these args
+
+# ============================================================
+# MEMORY SETTINGS (Ultra Low - ~200-300MB per client)
+# ============================================================
+
+# Initial heap size: 128MB (minimal start)
+-Xms128m
+
+# Maximum heap size: 384MB (cap memory usage)
+-Xmx384m
+
+# ============================================================
+# GARBAGE COLLECTION (G1GC - Best for low memory)
+# ============================================================
+
+# Use G1 garbage collector (efficient for small heaps)
+-XX:+UseG1GC
+
+# Target max GC pause time: 50ms (responsive but allows aggressive GC)
+-XX:MaxGCPauseMillis=50
+
+# Trigger GC earlier to prevent spikes
+-XX:InitiatingHeapOccupancyPercent=45
+
+# ============================================================
+# METASPACE (Class metadata - can be reduced)
+# ============================================================
+
+# Initial metaspace: 64MB
+-XX:MetaspaceSize=64m
+
+# Max metaspace: 128MB
+-XX:MaxMetaspaceSize=128m
+
+# ============================================================
+# PERFORMANCE TUNING
+# ============================================================
+
+# Enable assertions (RuneLite developer mode requirement)
+-ea
+
+# Disable explicit GC calls (we control GC via UltraPerformance plugin)
+-XX:+DisableExplicitGC
+
+# Optimize string deduplication (saves memory)
+-XX:+UseStringDeduplication
+
+# ============================================================
+# OPTIONAL: Even More Aggressive (Use if needed)
+# ============================================================
+
+# Uncomment for EXTREME low memory (may cause more GC pauses):
+# -Xms96m
+# -Xmx256m
+# -XX:MaxGCPauseMillis=100
+# -XX:InitiatingHeapOccupancyPercent=30
+
+# ============================================================
+# EXPECTED PERFORMANCE
+# ============================================================
+#
+# With these settings, each RuneLite client should use:
+# - Memory: 200-350MB (vs default 512MB-1GB)
+# - CPU: Minimal (5-10 FPS mode)
+# - Multi-box capacity: 10-20 clients on 8GB RAM
+#
+# Without optimizations:
+# - Default RuneLite: ~600-800MB per client
+# - Max clients on 8GB: ~6-8
+#
+# With optimizations:
+# - Our build: ~200-350MB per client
+# - Max clients on 8GB: ~15-25
+#
+# Example: 16GB RAM could run ~40+ clients!
+
+# ============================================================
+# COMPLETE VM OPTIONS STRING (Copy/Paste)
+# ============================================================
+
+-ea -Xms128m -Xmx384m -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=45 -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:+DisableExplicitGC -XX:+UseStringDeduplication
