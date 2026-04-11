@@ -34,15 +34,13 @@ public class Constants
 {
 	/**
 	 * The original width of the game when running in fixed mode.
-	 * Modified for multi-boxing: allows ultra-small windows (min 50x50)
 	 */
-	public static final int GAME_FIXED_WIDTH = 50; // Was 765
+	public static final int GAME_FIXED_WIDTH = 765;
 
 	/**
 	 * The original height of the game when running in fixed mode.
-	 * Modified for multi-boxing: allows ultra-small windows (min 50x50)
 	 */
-	public static final int GAME_FIXED_HEIGHT = 50; // Was 503
+	public static final int GAME_FIXED_HEIGHT = 503;
 
 	/**
 	 * Dimension representation of the width and height of the game in fixed mode.

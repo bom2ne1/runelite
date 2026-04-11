@@ -29,12 +29,15 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.input.MouseListener;
 
+@Slf4j
 public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
+	private long lastLogTime = 0;
 
 	@Inject
 	public TranslateMouseListener(Client client)
@@ -88,6 +91,17 @@ public class TranslateMouseListener implements MouseListener
 	{
 		Dimension stretchedDimensions = client.getStretchedDimensions();
 		Dimension realDimensions = client.getRealDimensions();
+
+		// Debug logging (throttled to once per second)
+		long now = System.currentTimeMillis();
+		if (now - lastLogTime > 1000)
+		{
+			log.debug("[StretchedMode] Dimensions - Stretched: {}x{}, Real: {}x{}, Mouse: ({}, {})",
+				stretchedDimensions.width, stretchedDimensions.height,
+				realDimensions.width, realDimensions.height,
+				e.getX(), e.getY());
+			lastLogTime = now;
+		}
 
 		// Avoid division by zero and handle small window sizes properly
 		double scaleX = (double) realDimensions.getWidth() / (double) stretchedDimensions.width;
