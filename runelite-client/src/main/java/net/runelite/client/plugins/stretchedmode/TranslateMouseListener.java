@@ -96,10 +96,12 @@ public class TranslateMouseListener implements MouseListener
 		long now = System.currentTimeMillis();
 		if (now - lastLogTime > 1000)
 		{
-			log.debug("[StretchedMode] Dimensions - Stretched: {}x{}, Real: {}x{}, Mouse: ({}, {})",
+			log.info("[StretchedMode-MouseDebug] Stretched: {}x{}, Real: {}x{}, RawMouse: ({},{}), Scaled: ({},{})",
 				stretchedDimensions.width, stretchedDimensions.height,
 				realDimensions.width, realDimensions.height,
-				e.getX(), e.getY());
+				e.getX(), e.getY(),
+				(int) Math.round(e.getX() * ((double) realDimensions.getWidth() / (double) stretchedDimensions.width)),
+				(int) Math.round(e.getY() * ((double) realDimensions.getHeight() / (double) stretchedDimensions.height)));
 			lastLogTime = now;
 		}
 
