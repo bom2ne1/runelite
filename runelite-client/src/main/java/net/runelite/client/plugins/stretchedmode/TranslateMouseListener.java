@@ -89,8 +89,17 @@ public class TranslateMouseListener implements MouseListener
 		Dimension stretchedDimensions = client.getStretchedDimensions();
 		Dimension realDimensions = client.getRealDimensions();
 
-		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
-		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
+		// Avoid division by zero and handle small window sizes properly
+		double scaleX = (double) realDimensions.getWidth() / (double) stretchedDimensions.width;
+		double scaleY = (double) realDimensions.getHeight() / (double) stretchedDimensions.height;
+
+		// Use double precision for accurate scaling, especially with small windows
+		int newX = (int) Math.round(e.getX() * scaleX);
+		int newY = (int) Math.round(e.getY() * scaleY);
+
+		// Clamp coordinates to valid game dimensions to prevent out-of-bounds
+		newX = Math.max(0, Math.min(newX, (int) realDimensions.getWidth() - 1));
+		newY = Math.max(0, Math.min(newY, (int) realDimensions.getHeight() - 1));
 
 		MouseEvent mouseEvent = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
 			newX, newY, e.getClickCount(), e.isPopupTrigger(), e.getButton());
